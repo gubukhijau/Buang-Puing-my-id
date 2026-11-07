@@ -1,0 +1,6 @@
+{
+  "name": "BUANGPUING.MY.ID – Jasa Buang Puing & Layanan Proyek",
+  "description": "Jasa buang puing bangunan, sampah renovasi, pembersihan lahan, galian tanah, sewa alat berat, dan layanan proyek cepat & terpercaya.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
