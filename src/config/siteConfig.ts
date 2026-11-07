@@ -4,6 +4,8 @@
 
 export interface ServiceItem {
   id: string;
+  slug: string;
+  aliases?: string[];
   name: string;
   shortDesc: string;
   category: 'puing' | 'lahan' | 'proyek';
@@ -53,6 +55,8 @@ export function createWhatsAppUrl(message: string, customPhone?: string): string
 export const SERVICES_DATA: ServiceItem[] = [
   {
     id: 'buang-puing-bangunan',
+    slug: 'buang-puing',
+    aliases: ['buang-puing-bangunan', 'jasa-buang-puing', 'jasa-buang-puing-bangunan'],
     name: 'Jasa Buang Puing Bangunan',
     shortDesc: 'Angkut dan buang puing sisa pembongkaran bangunan dengan praktis.',
     category: 'puing',
@@ -69,6 +73,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'buang-sampah-renovasi',
+    slug: 'buang-sampah-renovasi',
+    aliases: ['sampah-renovasi', 'jasa-buang-sampah-renovasi'],
     name: 'Jasa Buang Sampah Renovasi',
     shortDesc: 'Pembersihan dan pengangkutan sampah sisa renovasi rumah maupun gedung.',
     category: 'puing',
@@ -85,6 +91,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'buang-sampah-pohon',
+    slug: 'buang-sampah-pohon',
+    aliases: ['sampah-pohon', 'jasa-buang-sampah-pohon'],
     name: 'Jasa Buang Sampah Pohon',
     shortDesc: 'Angkut ranting, batang pohon, daun, dan sampah hasil pemangkasan.',
     category: 'lahan',
@@ -100,6 +108,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'pengurugan-puing-tanah',
+    slug: 'pengurugan-puing-tanah',
+    aliases: ['pengurugan-tanah', 'urug-puing', 'jasa-pengurugan-puing-tanah'],
     name: 'Jasa Pengurugan Puing/Tanah',
     shortDesc: 'Melayani kebutuhan pengurugan tanah dan material puing untuk proyek.',
     category: 'proyek',
@@ -115,6 +125,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'pembersihan-lahan',
+    slug: 'pembersihan-lahan',
+    aliases: ['jasa-pembersihan-lahan'],
     name: 'Jasa Pembersihan Lahan',
     shortDesc: 'Membersihkan lahan kosong dari rumput, semak, dan material sisa bangunan.',
     category: 'lahan',
@@ -131,6 +143,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'galian-tanah',
+    slug: 'galian-tanah',
+    aliases: ['jasa-galian-tanah'],
     name: 'Jasa Galian Tanah',
     shortDesc: 'Layanan pekerjaan galian tanah untuk kebutuhan konstruksi dan proyek.',
     category: 'proyek',
@@ -146,6 +160,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'sewa-alat-berat',
+    slug: 'sewa-alat-berat',
+    aliases: ['alat-berat'],
     name: 'Sewa Alat Berat',
     shortDesc: 'Solusi kebutuhan alat berat untuk pekerjaan konstruksi dan pembersihan lahan.',
     category: 'proyek',
@@ -162,6 +178,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'proyek-borongan',
+    slug: 'proyek-borongan',
+    aliases: ['jasa-proyek-borongan'],
     name: 'Jasa Proyek Borongan',
     shortDesc: 'Melayani berbagai pekerjaan proyek dengan sistem borongan sesuai kebutuhan.',
     category: 'proyek',
@@ -177,6 +195,8 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'renovasi-rumah',
+    slug: 'renovasi-rumah',
+    aliases: ['jasa-renovasi-rumah'],
     name: 'Jasa Renovasi Rumah',
     shortDesc: 'Layanan renovasi dan perbaikan rumah untuk berbagai kebutuhan bangunan.',
     category: 'proyek',

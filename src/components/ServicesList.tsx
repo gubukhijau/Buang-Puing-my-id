@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SERVICES_DATA, ServiceItem } from '../config/siteConfig';
 import { ServiceCard } from './ServiceCard';
 import { Sparkles, Search, X } from 'lucide-react';
@@ -10,18 +10,63 @@ interface ServicesListProps {
 export const ServicesList: React.FC<ServicesListProps> = ({ onSelectService }) => {
   const [activeCategory, setActiveCategory] = useState<'all' | 'puing' | 'lahan' | 'proyek'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
+
+  // Handle URL hash anchor tagging (e.g. #buang-puing, #galian-tanah, #sewa-alat-berat)
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const rawHash = window.location.hash.replace('#', '').trim().toLowerCase();
+      if (!rawHash) return;
+
+      const matchedService = SERVICES_DATA.find(
+        (s) =>
+          s.slug.toLowerCase() === rawHash ||
+          s.id.toLowerCase() === rawHash ||
+          s.aliases?.some((a) => a.toLowerCase() === rawHash)
+      );
+
+      if (matchedService) {
+        // Ensure category does not hide the targeted service
+        setActiveCategory('all');
+        setSearchQuery('');
+        setHighlightedSlug(matchedService.slug);
+
+        // Smooth scroll to targeted card
+        setTimeout(() => {
+          const el =
+            document.getElementById(matchedService.slug) ||
+            document.getElementById(matchedService.id) ||
+            document.getElementById(rawHash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 150);
+
+        // Turn off highlight after 4.5 seconds
+        const timer = setTimeout(() => {
+          setHighlightedSlug(null);
+        }, 4500);
+        return () => clearTimeout(timer);
+      }
+    };
+
+    handleHashNavigation();
+    window.addEventListener('hashchange', handleHashNavigation);
+    return () => window.removeEventListener('hashchange', handleHashNavigation);
+  }, []);
 
   const filteredServices = SERVICES_DATA.filter((service) => {
     const matchesCategory = activeCategory === 'all' || service.category === activeCategory;
     const matchesSearch =
       searchQuery.trim() === '' ||
       service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      service.shortDesc.toLowerCase().includes(searchQuery.toLowerCase());
+      service.shortDesc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.slug.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   return (
-    <section className="w-full px-4 pt-6 pb-4">
+    <section id="layanan" className="w-full px-4 pt-6 pb-4 scroll-mt-16">
       {/* Section Title Header */}
       <div className="text-center mb-4">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#1261B5] text-[11px] font-bold uppercase tracking-wider mb-2">
@@ -88,7 +133,7 @@ export const ServicesList: React.FC<ServicesListProps> = ({ onSelectService }) =
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari layanan (contoh: puing, tanah, alat berat)..."
+            placeholder="Cari layanan (contoh: #buang-puing, galian, alat berat)..."
             className="w-full pl-8 pr-8 py-2 text-xs bg-white rounded-xl border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1261B5]/30 focus:border-[#1261B5] transition-all"
           />
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
@@ -111,6 +156,7 @@ export const ServicesList: React.FC<ServicesListProps> = ({ onSelectService }) =
               key={service.id}
               service={service}
               index={index}
+              isHighlighted={highlightedSlug === service.slug || highlightedSlug === service.id}
               onOpenDetails={onSelectService}
             />
           ))

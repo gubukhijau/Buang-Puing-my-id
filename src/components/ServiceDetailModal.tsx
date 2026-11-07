@@ -52,7 +52,7 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
         </div>
 
         {/* Recommended Fleet */}
-        <div className="bg-blue-50/70 border border-blue-100 rounded-xl p-3 mb-4 flex items-center gap-2.5">
+        <div className="bg-blue-50/70 border border-blue-100 rounded-xl p-3 mb-3 flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-[#1261B5] text-white flex items-center justify-center shrink-0">
             <Truck className="w-4 h-4 text-white" />
           </div>
@@ -64,6 +64,24 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
               {service.recommendedFleet}
             </p>
           </div>
+        </div>
+
+        {/* Tagger Anchor Link */}
+        <div className="flex items-center justify-between bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 mb-4">
+          <div className="flex items-center gap-1.5 text-slate-600 font-mono text-[11px] truncate">
+            <span className="text-[#1261B5] font-bold">Tag:</span>
+            <span className="text-slate-800 font-semibold truncate">buangpuing.my.id/#{service.slug}</span>
+          </div>
+          <button
+            onClick={() => {
+              const url = `${window.location.origin}${window.location.pathname}#${service.slug}`;
+              navigator.clipboard.writeText(url);
+              window.history.replaceState(null, '', `#${service.slug}`);
+            }}
+            className="shrink-0 px-2.5 py-1 text-[11px] font-bold rounded-lg bg-blue-50 text-[#1261B5] hover:bg-blue-100 transition-colors"
+          >
+            Salin Link
+          </button>
         </div>
 
         {/* Scope Checklist */}
