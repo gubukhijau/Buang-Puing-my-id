@@ -1,9 +1,11 @@
 import React from 'react';
 import { Truck, CheckCircle2, MessageSquare, CalendarClock, ShieldCheck } from 'lucide-react';
 import { FLEET_OPTIONS, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick } from '../utils/analytics';
 
 export const FleetSection: React.FC = () => {
-  const handleFleetInquiry = (fleetName: string) => {
+  const handleFleetInquiry = (fleetName: string, fleetId: string) => {
+    trackWhatsAppClick(`btn-fleet-${fleetId}`, `Pilih Armada: ${fleetName}`, fleetName, 'Fleet Section');
     const msg = `Halo BuangPuing.my.id, saya ingin menanyakan ketersediaan armada ${fleetName} untuk angkut puing/sampah proyek. Mohon info tarifnya.`;
     window.open(createWhatsAppUrl(msg), '_blank');
   };
@@ -79,8 +81,13 @@ export const FleetSection: React.FC = () => {
         {FLEET_OPTIONS.map((fleet) => (
           <div
             key={fleet.id}
-            onClick={() => handleFleetInquiry(fleet.name)}
-            className="group bg-white rounded-2xl p-3.5 border border-slate-200/90 hover:border-[#1261B5] transition-all cursor-pointer shadow-xs flex items-center justify-between"
+            id={`btn-fleet-${fleet.id}`}
+            data-gtm={`btn-fleet-${fleet.id}`}
+            data-gtm-action="whatsapp_inquiry"
+            data-gtm-category="conversion"
+            data-gtm-fleet={fleet.name}
+            onClick={() => handleFleetInquiry(fleet.name, fleet.id)}
+            className="gtm-track-wa group bg-white rounded-2xl p-3.5 border border-slate-200/90 hover:border-[#1261B5] transition-all cursor-pointer shadow-xs flex items-center justify-between"
           >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1261B5] flex items-center justify-center shrink-0 border border-blue-100 group-hover:bg-[#1261B5] group-hover:text-white transition-colors">

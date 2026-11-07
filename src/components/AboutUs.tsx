@@ -1,9 +1,11 @@
 import React from 'react';
 import { ShieldCheck, Truck, Clock, CheckCircle2, MessageCircle, Phone, Award } from 'lucide-react';
 import { SITE_CONFIG, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick, trackPhoneClick } from '../utils/analytics';
 
 export const AboutUs: React.FC = () => {
   const handleChatWA = () => {
+    trackWhatsAppClick('btn-wa-about', 'Chat WhatsApp Tentang Kami', 'Tentang Kami', 'About Us Section');
     const msg = 'Halo BuangPuing.my.id, saya ingin mengetahui lebih lanjut mengenai profil dan layanan jasa Anda.';
     window.open(createWhatsAppUrl(msg), '_blank');
   };
@@ -103,16 +105,25 @@ export const AboutUs: React.FC = () => {
         {/* WhatsApp & Contact Direct Action */}
         <div className="flex flex-col gap-2">
           <button
+            id="btn-wa-about"
+            data-gtm="btn-wa-about"
+            data-gtm-action="whatsapp_inquiry"
+            data-gtm-category="conversion"
+            data-gtm-location="about_us"
             onClick={handleChatWA}
-            className="w-full py-2.5 px-4 rounded-xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 transition-all cursor-pointer"
+            className="gtm-track-wa w-full py-2.5 px-4 rounded-xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 transition-all cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 fill-current" />
             <span>Chat WhatsApp ({SITE_CONFIG.phoneDisplay})</span>
           </button>
 
           <a
+            id="btn-call-about"
+            data-gtm="btn-call-about"
+            data-gtm-category="contact"
             href={`tel:${SITE_CONFIG.phoneRaw}`}
-            className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all"
+            onClick={() => trackPhoneClick('About Us')}
+            className="gtm-track-call w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all"
           >
             <Phone className="w-3.5 h-3.5 text-[#1261B5]" />
             <span>Telepon: {SITE_CONFIG.phoneDisplay}</span>

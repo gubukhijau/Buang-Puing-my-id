@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { MessageCircle, ShieldCheck, Zap, Award, Share2, Check, Phone } from 'lucide-react';
 import { SITE_CONFIG, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick, trackPhoneClick, pushGtmEvent } from '../utils/analytics';
 
 export const Header: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
+    pushGtmEvent('click_share', { action: 'share_website', location: 'Header' });
     if (navigator.share) {
       try {
         await navigator.share({
@@ -24,6 +26,7 @@ export const Header: React.FC = () => {
   };
 
   const handlePrimaryWhatsApp = () => {
+    trackWhatsAppClick('btn-wa-header', 'HUBUNGI KAMI SEKARANG', 'Umum', 'Header');
     const defaultMsg = 'Halo BuangPuing.my.id, saya ingin konsultasi jasa buang puing / layanan proyek. Mohon info harga dan ketersediaan armada.';
     window.open(createWhatsAppUrl(defaultMsg), '_blank');
   };
@@ -62,6 +65,8 @@ export const Header: React.FC = () => {
         <div className="flex items-center gap-2">
           {/* Share Button */}
           <button
+            id="btn-share-header"
+            data-gtm="btn-share-header"
             onClick={handleShare}
             aria-label="Bagikan link website"
             className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition-all backdrop-blur-sm border border-white/20 text-white"
@@ -81,9 +86,13 @@ export const Header: React.FC = () => {
 
           {/* Quick Call Button */}
           <a
+            id="btn-call-header"
+            data-gtm="btn-call-header"
+            data-gtm-category="contact"
             href={`tel:${SITE_CONFIG.phoneRaw}`}
+            onClick={() => trackPhoneClick('Header Top Bar')}
             aria-label="Telepon langsung"
-            className="p-1.5 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-white border border-white/20"
+            className="gtm-track-call p-1.5 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 transition-all text-white border border-white/20"
           >
             <Phone className="w-3.5 h-3.5" />
           </a>
@@ -131,8 +140,13 @@ export const Header: React.FC = () => {
 
         {/* Main CTA Button: HUBUNGI KAMI SEKARANG */}
         <button
+          id="btn-wa-header"
+          data-gtm="btn-wa-header"
+          data-gtm-action="whatsapp_inquiry"
+          data-gtm-category="conversion"
+          data-gtm-location="header"
           onClick={handlePrimaryWhatsApp}
-          className="w-full max-w-[360px] py-3.5 px-5 rounded-2xl bg-gradient-to-r from-[#FF851B] to-[#FFC928] text-[#083B70] font-black text-sm tracking-wide shadow-lg shadow-black/20 hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 group cursor-pointer border border-amber-300/40"
+          className="gtm-track-wa w-full max-w-[360px] py-3.5 px-5 rounded-2xl bg-gradient-to-r from-[#FF851B] to-[#FFC928] text-[#083B70] font-black text-sm tracking-wide shadow-lg shadow-black/20 hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 group cursor-pointer border border-amber-300/40"
         >
           <div className="w-8 h-8 rounded-full bg-[#083B70] text-white flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
             <MessageCircle className="w-4 h-4 fill-current text-white" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, CheckCircle2, Truck, MessageCircle, ArrowRight } from 'lucide-react';
 import { ServiceItem, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick } from '../utils/analytics';
 
 interface ServiceDetailModalProps {
   service: ServiceItem | null;
@@ -11,6 +12,12 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
   if (!service) return null;
 
   const handleBookNow = () => {
+    trackWhatsAppClick(
+      `btn-wa-modal-${service.slug}`,
+      `Pesan Modal: ${service.name}`,
+      service.name,
+      'Service Detail Modal'
+    );
     window.open(createWhatsAppUrl(service.defaultMessage), '_blank');
   };
 
@@ -102,8 +109,14 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
         {/* Action Button: Pesan via WhatsApp */}
         <div className="pt-2 border-t border-slate-100">
           <button
+            id={`btn-wa-modal-${service.slug}`}
+            data-gtm={`btn-wa-modal-${service.slug}`}
+            data-gtm-action="whatsapp_order"
+            data-gtm-service={service.name}
+            data-gtm-category="conversion"
+            data-gtm-location="modal"
             onClick={handleBookNow}
-            className="w-full py-3.5 px-4 rounded-xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white font-extrabold text-xs tracking-wider flex items-center justify-center gap-2 shadow-md shadow-orange-500/20 cursor-pointer"
+            className="gtm-track-wa w-full py-3.5 px-4 rounded-xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white font-extrabold text-xs tracking-wider flex items-center justify-center gap-2 shadow-md shadow-orange-500/20 cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 fill-current" />
             <span>PESAN LAYANAN INI VIA WHATSAPP</span>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { MessageCircle, PhoneCall, ArrowRight } from 'lucide-react';
 import { SITE_CONFIG, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick, trackPhoneClick } from '../utils/analytics';
 
 export const CtaSection: React.FC = () => {
   const handleWhatsAppConsultation = () => {
+    trackWhatsAppClick('btn-wa-cta-main', 'KONSULTASI VIA WHATSAPP', 'Umum', 'Bottom CTA Section');
     const msg = 'Halo BuangPuing.my.id, saya butuh jasa buang puing / layanan proyek. Mohon bantu konsultasi dan estimasi biaya.';
     window.open(createWhatsAppUrl(msg), '_blank');
   };
@@ -28,8 +30,13 @@ export const CtaSection: React.FC = () => {
 
           {/* Big CTA Button in Orange/Yellow */}
           <button
+            id="btn-wa-cta-main"
+            data-gtm="btn-wa-cta-main"
+            data-gtm-action="whatsapp_inquiry"
+            data-gtm-category="conversion"
+            data-gtm-location="bottom_cta"
             onClick={handleWhatsAppConsultation}
-            className="w-full py-3.5 px-5 rounded-2xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white font-black text-sm tracking-wider shadow-lg shadow-orange-950/30 flex items-center justify-center gap-2.5 transition-all cursor-pointer group border-2 border-[#FFC928]/40 animate-pulse-cta"
+            className="gtm-track-wa w-full py-3.5 px-5 rounded-2xl bg-[#FF851B] hover:bg-[#e6730f] active:scale-[0.98] text-white font-black text-sm tracking-wider shadow-lg shadow-orange-950/30 flex items-center justify-center gap-2.5 transition-all cursor-pointer group border-2 border-[#FFC928]/40 animate-pulse-cta"
           >
             <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
               <MessageCircle className="w-4 h-4 fill-white text-[#FF851B]" />
@@ -42,8 +49,12 @@ export const CtaSection: React.FC = () => {
           <div className="mt-3 flex items-center justify-center gap-3 text-xs text-blue-100">
             <span>Atau telepon kami di:</span>
             <a
+              id="btn-call-cta"
+              data-gtm="btn-call-cta"
+              data-gtm-category="contact"
               href={`tel:${SITE_CONFIG.phoneRaw}`}
-              className="font-bold text-[#FFC928] hover:underline flex items-center gap-1"
+              onClick={() => trackPhoneClick('Bottom CTA')}
+              className="gtm-track-call font-bold text-[#FFC928] hover:underline flex items-center gap-1"
             >
               <PhoneCall className="w-3 h-3" />
               <span>{SITE_CONFIG.phoneDisplay}</span>

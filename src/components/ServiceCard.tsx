@@ -16,6 +16,7 @@ import {
   Check
 } from 'lucide-react';
 import { ServiceItem, createWhatsAppUrl, SITE_CONFIG } from '../config/siteConfig';
+import { trackWhatsAppClick, pushGtmEvent } from '../utils/analytics';
 
 interface ServiceCardProps {
   service: ServiceItem;
@@ -61,10 +62,22 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
   const handleOrderWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation();
+    trackWhatsAppClick(
+      `btn-wa-service-${service.slug}`,
+      `Pesan Sekarang: ${service.name}`,
+      service.name,
+      'Service Card'
+    );
     window.open(createWhatsAppUrl(service.defaultMessage), '_blank');
   };
 
   const handleCardClick = () => {
+    trackWhatsAppClick(
+      `card-wa-service-${service.slug}`,
+      `Card Click: ${service.name}`,
+      service.name,
+      'Service Card'
+    );
     // Update hash smoothly without page jump
     window.history.replaceState(null, '', `#${service.slug}`);
     window.open(createWhatsAppUrl(service.defaultMessage), '_blank');
@@ -72,6 +85,10 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
   const handleCopyLink = (e: React.MouseEvent) => {
     e.stopPropagation();
+    pushGtmEvent('click_copy_link', {
+      service_name: service.name,
+      service_slug: service.slug,
+    });
     const serviceUrl = `${window.location.origin}${window.location.pathname}#${service.slug}`;
     navigator.clipboard.writeText(serviceUrl);
     window.history.replaceState(null, '', `#${service.slug}`);
@@ -142,8 +159,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
             {/* Action Row: Pesan Sekarang Button + Info + Copy Link */}
             <div className="mt-3 flex items-center gap-2 flex-wrap">
               <button
+                id={`btn-wa-service-${service.slug}`}
+                data-gtm={`btn-wa-service-${service.slug}`}
+                data-gtm-action="whatsapp_order"
+                data-gtm-service={service.name}
+                data-gtm-category="conversion"
                 onClick={handleOrderWhatsApp}
-                className="px-3 py-1.5 rounded-lg bg-[#FF851B] hover:bg-[#e06f0e] active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-orange-500/20 transition-all cursor-pointer"
+                className="gtm-track-wa px-3 py-1.5 rounded-lg bg-[#FF851B] hover:bg-[#e06f0e] active:scale-95 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm shadow-orange-500/20 transition-all cursor-pointer"
               >
                 <MessageCircle className="w-3.5 h-3.5 fill-current" />
                 <span>Pesan Sekarang</span>
@@ -152,6 +174,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
               {/* Quick Details trigger */}
               <button
+                id={`btn-detail-${service.slug}`}
+                data-gtm="btn-service-details"
+                data-gtm-service={service.name}
                 onClick={(e) => {
                   e.stopPropagation();
                   onOpenDetails(service);
@@ -165,6 +190,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
               {/* Copy Anchor Link Button */}
               <button
+                id={`btn-copylink-${service.slug}`}
+                data-gtm="btn-service-copylink"
+                data-gtm-service={service.name}
                 onClick={handleCopyLink}
                 title={`Salin link https://buangpuing.my.id/#${service.slug}`}
                 className="p-1.5 rounded-lg text-slate-400 hover:text-[#1261B5] hover:bg-blue-50 active:scale-95 transition-all text-xs flex items-center gap-1"

@@ -1,9 +1,11 @@
 import React from 'react';
 import { MapPin, Navigation, Clock } from 'lucide-react';
 import { SERVICE_AREAS, createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick } from '../utils/analytics';
 
 export const AreaSection: React.FC = () => {
   const handleAreaClick = (areaName: string) => {
+    trackWhatsAppClick(`btn-area-${areaName.toLowerCase().replace(/\s+/g, '-')}`, `Pilih Area: ${areaName}`, areaName, 'Area Section');
     const msg = `Halo BuangPuing.my.id, apakah melayani jasa buang puing / proyek untuk wilayah ${areaName}? Mohon info ketersediaan armada.`;
     window.open(createWhatsAppUrl(msg), '_blank');
   };
@@ -29,9 +31,14 @@ export const AreaSection: React.FC = () => {
         {SERVICE_AREAS.map((area) => (
           <button
             key={area.name}
+            id={`btn-area-${area.name.toLowerCase().replace(/\s+/g, '-')}`}
+            data-gtm={`btn-area-${area.name.toLowerCase().replace(/\s+/g, '-')}`}
+            data-gtm-action="whatsapp_inquiry"
+            data-gtm-area={area.name}
+            data-gtm-category="conversion"
             onClick={() => handleAreaClick(area.name)}
             title={`Klik untuk order di ${area.name}`}
-            className="group px-3.5 py-2 rounded-xl bg-white border border-slate-200/90 hover:border-[#1261B5] hover:bg-blue-50/60 shadow-xs active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer"
+            className="gtm-track-wa group px-3.5 py-2 rounded-xl bg-white border border-slate-200/90 hover:border-[#1261B5] hover:bg-blue-50/60 shadow-xs active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer"
           >
             <div className="w-5 h-5 rounded-md bg-[#1261B5]/10 group-hover:bg-[#1261B5] text-[#1261B5] group-hover:text-white flex items-center justify-center transition-colors">
               <MapPin className="w-3 h-3 text-current" />

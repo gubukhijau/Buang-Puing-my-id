@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import { createWhatsAppUrl } from '../config/siteConfig';
+import { trackWhatsAppClick } from '../utils/analytics';
 
 export const FloatingWhatsApp: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(true);
 
   const handleClick = () => {
+    trackWhatsAppClick('btn-wa-floating', 'Floating WhatsApp Button', 'Umum', 'Floating Widget');
     const defaultMsg = 'Halo, saya ingin bertanya mengenai layanan BuangPuing.my.id.';
     window.open(createWhatsAppUrl(defaultMsg), '_blank');
   };
@@ -32,9 +34,14 @@ export const FloatingWhatsApp: React.FC = () => {
 
       {/* Main WhatsApp Floating Button */}
       <button
+        id="btn-wa-floating"
+        data-gtm="btn-wa-floating"
+        data-gtm-action="whatsapp_inquiry"
+        data-gtm-category="conversion"
+        data-gtm-location="floating"
         onClick={handleClick}
         aria-label="Hubungi BuangPuing via WhatsApp"
-        className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-xl hover:bg-[#20ba59] active:scale-95 transition-all cursor-pointer border-2 border-white"
+        className="gtm-track-wa group relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-xl hover:bg-[#20ba59] active:scale-95 transition-all cursor-pointer border-2 border-white"
       >
         {/* Soft Radar Pulse Ring */}
         <span className="absolute -inset-1 rounded-full bg-[#25D366] opacity-40 animate-ping-soft pointer-events-none" />

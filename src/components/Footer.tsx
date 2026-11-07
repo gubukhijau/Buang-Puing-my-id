@@ -1,6 +1,7 @@
 import React from 'react';
 import { Truck, MapPin, Phone, Mail } from 'lucide-react';
 import { SITE_CONFIG } from '../config/siteConfig';
+import { HistatsCounter } from './HistatsCounter';
 
 export const Footer: React.FC = () => {
   return (
@@ -36,8 +37,11 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Histats Realtime Counter */}
+        <HistatsCounter />
+
         {/* Copyright */}
-        <p className="text-[11px] text-blue-300/60 mt-3">
+        <p className="text-[11px] text-blue-300/60 mt-1">
           Copyright © 2026 BuangPuing.my.id. All Rights Reserved.
         </p>
       </div>
