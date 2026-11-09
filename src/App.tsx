@@ -14,10 +14,12 @@ import { CtaSection } from './components/CtaSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ServiceDetailModal } from './components/ServiceDetailModal';
+import { LegalModal, LegalTabType } from './components/LegalModal';
 import { ServiceItem } from './config/siteConfig';
 
 export default function App() {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [legalModalTab, setLegalModalTab] = useState<LegalTabType | null>(null);
 
   return (
     <div className="min-h-screen w-full bg-[#F4F8FC] py-0 md:py-8 flex flex-col items-center justify-start antialiased text-[#1D2939]">
@@ -50,7 +52,7 @@ export default function App() {
         <CtaSection />
 
         {/* 8. Footer */}
-        <Footer />
+        <Footer onOpenLegal={(tab) => setLegalModalTab(tab)} />
 
         {/* 9. Floating WhatsApp Button */}
         <FloatingWhatsApp />
@@ -59,6 +61,13 @@ export default function App() {
         <ServiceDetailModal
           service={selectedService}
           onClose={() => setSelectedService(null)}
+        />
+
+        {/* 11. Google Ads Compliance Legal Modal (Privacy, Terms, Disclaimer) */}
+        <LegalModal
+          isOpen={legalModalTab !== null}
+          initialTab={legalModalTab || 'privacy'}
+          onClose={() => setLegalModalTab(null)}
         />
       </main>
     </div>

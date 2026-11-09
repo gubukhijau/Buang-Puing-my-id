@@ -38,9 +38,11 @@ export const SITE_CONFIG = {
   phoneDisplay: '0856-0252-0987',
   phoneRaw: '6285602520987', // WhatsApp 085602520987 in international format
   email: 'info@buangpuing.my.id',
-  operationalHours: 'Buka Setiap Hari (24 Jam Fast Response)',
+  operationalHours: 'Senin - Minggu: 06.00 - 22.00 WIB (Fast Response)',
   address: 'Melayani Seluruh Wilayah Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi)',
   badges: ['Profesional', 'Cepat', 'Terpercaya'],
+  // Official Histats Site ID (dapat diisi ID dari histats.com)
+  histatsSiteId: '', // Masukkan ID Histats jika memiliki akun di histats.com
 };
 
 /**
